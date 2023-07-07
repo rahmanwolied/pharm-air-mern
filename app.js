@@ -4,8 +4,12 @@ const loginRouter = require('./routes/login.routes');
 const registerRouter = require('./routes/register.routes');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const { getHome } = require('./controllers/home.controller');
+const { getError } = require('./controllers/error.controller');
 
 const dbURL = process.env.DB_URL;
+
+// connecting to the database
 
 mongoose
 	.connect(dbURL)
@@ -24,14 +28,8 @@ app.use(express.json());
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
 
-app.get('/', (req, res) => {
-	res.statusCode = 200;
-	res.sendFile(__dirname + '/views/index.html');
-});
+app.get('/', getHome);
 
-app.use((req, res) => {
-	res.statusCode = 404;
-	res.send('404, not found');
-});
+app.use(getError);
 
 module.exports = app;
