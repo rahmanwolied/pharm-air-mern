@@ -1,9 +1,10 @@
-const path = require('path')
+const path = require('path');
+const User = require('../models/user.model');
 
-exports.getLogin = (res, req) =>{
-    res.status = 200
-    res.sendFile(path.join(__dirname, '../views/login.html'))
-}
+exports.getLogin = (req, res) => {
+	res.statusCode = 200;
+	res.sendFile(path.join(__dirname, '../views/login.html'));
+};
 
 exports.handleLogin = async (req, res) => {
 	try {
@@ -17,4 +18,4 @@ exports.handleLogin = async (req, res) => {
 	} catch (error) {
 		console.log(`Error occured: ${error}`);
 	}
-}
+};

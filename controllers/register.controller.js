@@ -1,9 +1,10 @@
-const path = require("path")
+const path = require('path');
+const User = require('../models/user.model');
 
 exports.getRegister = (req, res) => {
 	res.statusCode = 200;
 	res.sendFile(path.join(__dirname, '../views/register.html'));
-}
+};
 
 exports.createUser = async (req, res) => {
 	try {
@@ -14,4 +15,4 @@ exports.createUser = async (req, res) => {
 	} catch (error) {
 		res.status(500).json(error);
 	}
-}
+};
