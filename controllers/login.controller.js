@@ -11,7 +11,9 @@ exports.handleLogin = async (req, res) => {
 		const { email, password } = req.body;
 		const user = await User.findOne({ email: email });
 		if (user && user.password === password) {
-			res.status(200).json({ status: 'valid user' });
+			//if a user is found and his password matches the
+			// res.status(200).json({ status: 'valid user' });
+			res.redirect('/');
 		} else {
 			res.status(300).json({ status: ' user not found' });
 		}
