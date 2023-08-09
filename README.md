@@ -39,11 +39,11 @@ This repository is for a school project, and contributions are limited to the fo
 1. Mosheur Rahman Wolied.
 2. Yasin Hossain Katib.
 3. Maisoon Tasnia Tuba.
-4. Avijit Sarkar
+4. Avizit Sarkar
 
 ## License
 
-This project is not open for public use. All rights are reserved by the respective contributors: Mosheur Rahman Wolied, Yasin Hossain Katib, Maisoon Tasnia Tuba, Avijit Sarkar.
+This project is not open for public use. All rights are reserved by the respective contributors: Mosheur Rahman Wolied, Yasin Hossain Katib, Maisoon Tasnia Tuba, Avizit Sarkar.
 
 ## Acknowledgements
 
