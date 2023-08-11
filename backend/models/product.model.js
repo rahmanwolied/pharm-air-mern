@@ -19,7 +19,7 @@ const productSchema = mongoose.Schema({
 	},
 	discount: {
 		type: Number,
-		required: true,
+		required: false,
 	},
 });
 

@@ -7,6 +7,7 @@ const registerRouter = require('./routes/register.routes');
 const adminRouter = require('./routes/admin.routes');
 const { getHome } = require('./controllers/home.controller');
 const { getError } = require('./controllers/error.controller');
+const Admin = require('./models/admin.model');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use(express.static('public'));
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
 app.use('/admin', adminRouter);
