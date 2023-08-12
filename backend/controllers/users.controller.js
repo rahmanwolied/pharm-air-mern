@@ -1,0 +1,105 @@
+const createError = require('http-errors');
+const fs = require('fs');
+
+const User = require('../models/user.model');
+const { successResponse } = require('./response.controller');
+const { findWithId } = require('../services/findItem');
+
+const getUsers = async (req, res, next) => {
+	try {
+		const search = req.query.search || '';
+		const page = Number(req.query.page) || 1;
+		const limit = Number(req.query.limit) || 3;
+
+		const searchRegex = new RegExp('.*' + search + '.*', 'i'); // 'i' makes it case insensitive
+
+		const filter = {
+			isAdmin: { $ne: true },
+			$or: [{ name: { $regex: searchRegex } }, { email: { $regex: searchRegex } }, { phone: { $regex: searchRegex } }],
+		};
+
+		const options = {
+			password: 0,
+			image: 0, // exclude password and image from result
+		};
+
+		const users = await User.find(filter, options)
+			.limit(limit)
+			.skip((page - 1) * limit);
+
+		const count = await User.find(filter).countDocuments();
+
+		if (!count) {
+			console.log('Users does not exist');
+			throw createError(404, 'Users does not exist');
+		}
+
+		return successResponse(res, {
+			statusCode: 200,
+			message: 'Users fetched successfully',
+			payload: {
+				users,
+				pagination: {
+					totalPages: Math.ceil(count / limit),
+					currentPage: page,
+					previousPage: page > 1 ? page - 1 : null, // if page is greater than 1, then previous page is page - 1, else null
+					nextPage: page < Math.ceil(count / limit) ? page + 1 : null, // if page is less than total pages, then next page is page + 1, else null
+				},
+			},
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+const getUserById = async (req, res, next) => {
+	try {
+		const id = req.params.id;
+		const options = { password: 0 };
+		const user = await findWithId(User, id, options);
+
+		return successResponse(res, {
+			statusCode: 200,
+			message: 'User fetched successfully',
+			payload: { user },
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+const deleteUserById = async (req, res, next) => {
+	try {
+		const id = req.params.id;
+		const options = { password: 0 };
+		const user = await findWithId(User, id, options);
+
+		// deleting image of the deleted user
+		const userImagePath = user.image;
+		fs.access(userImagePath, (err) => {
+			if (err) {
+				console.error('File does not exist');
+				return;
+			} else {
+				fs.unlink(userImagePath, (err) => {
+					if (err) throw err;
+					console.log('File deleted');
+				});
+			}
+		});
+
+		await User.findByIdAndDelete({
+			_id: id,
+			isAdmin: false,
+		});
+
+		return successResponse(res, {
+			statusCode: 200,
+			message: 'User deleted successfully',
+		});
+	} catch (error) {
+		next(error);
+	}
+};
+
+module.exports = { getUsers, getUserById, deleteUserById };

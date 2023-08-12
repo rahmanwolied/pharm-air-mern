@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const dbURL = process.env.DB_URL;
+const { dbURL } = require('../src/secret');
 
 exports.dbConnect = async () => {
 	try {
