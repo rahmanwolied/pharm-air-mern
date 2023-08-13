@@ -1,8 +1,10 @@
-const createError = require('http-errors');
 const fs = require('fs');
+const path = require('path');
+const createError = require('http-errors');
 
 const User = require('../models/user.model');
 const { successResponse } = require('./response.controller');
+const { deleteImage } = require('../helpers/deleteImages');
 const { findWithId } = require('../services/findItem');
 
 const getUsers = async (req, res, next) => {
@@ -75,18 +77,13 @@ const deleteUserById = async (req, res, next) => {
 		const user = await findWithId(User, id, options);
 
 		// deleting image of the deleted user
-		const userImagePath = user.image;
-		fs.access(userImagePath, (err) => {
-			if (err) {
-				console.error('File does not exist');
-				return;
-			} else {
-				fs.unlink(userImagePath, (err) => {
-					if (err) throw err;
-					console.log('File deleted');
-				});
-			}
-		});
+		if (user.image !== 'avatar-default-icon.png') {
+			const userImagePath = path.join('public', 'images', 'users', user.image);
+			console.log(userImagePath);
+			deleteImage(userImagePath);
+		} else {
+			console.log('User image is default image');
+		}
 
 		await User.findByIdAndDelete({
 			_id: id,
