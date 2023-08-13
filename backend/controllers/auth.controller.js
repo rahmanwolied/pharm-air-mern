@@ -18,7 +18,7 @@ const handleLogin = async (req, res, next) => {
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch) throw createError(401, 'Invalid credentials');
 
-		const accessToken = createJSONWebToken({ email }, jwtAccessKey, '10m');
+		const accessToken = createJSONWebToken({ _id: user._id }, jwtAccessKey, '10m');
 
 		res.cookie('accessToken', accessToken, {
 			httpOnly: true,
