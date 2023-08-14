@@ -16,6 +16,7 @@ const authRouter = require('../routes/auth.routes');
 
 const { getHome } = require('../controllers/home.controller');
 const { errorResponse } = require('../controllers/response.controller');
+const categoryRouter = require('../routes/categoryRouter');
 
 // creating app
 const app = express();
@@ -44,6 +45,7 @@ app.use('/api/seed', seedRouter); // generate dummy data
 app.use('/api/auth', authRouter);
 app.use('/register', registerRouter);
 app.use('/admin', adminRouter);
+app.use('/category', categoryRouter);
 
 app.get('/', getHome);
 
