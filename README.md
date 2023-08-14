@@ -53,6 +53,6 @@ We would like to express our gratitude to the following resources and libraries 
 - [Node.js](https://nodejs.org/)
 - [Express.js](https://expressjs.com/)
 - [MongoDB](https://www.mongodb.com/)
-- [Bootstrap](https://getbootstrap.com/)
+- [Tailwind](https://tailwindcss.com/)
 - [Font Awesome](https://fontawesome.com/)
 - [Unsplash](https://unsplash.com/) (for images)
