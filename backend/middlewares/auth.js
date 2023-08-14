@@ -12,12 +12,13 @@ const isLoggedIn = (req, res, next) => {
 		if (!decoded) {
 			throw createError(401, 'You are not logged in');
 		}
-		req.body.userId = decoded._id;
+		req.user = decoded.user;
 		next();
 	} catch (error) {
 		return next(error);
 	}
 };
+
 const isLoggedOut = (req, res, next) => {
 	try {
 		const token = req.cookies.accessToken;
@@ -31,4 +32,13 @@ const isLoggedOut = (req, res, next) => {
 	}
 };
 
-module.exports = { isLoggedIn, isLoggedOut };
+const isAdmin = (req, res, next) => {
+	try {
+		if (!req.user.isAdmin) throw createError(403, 'You are not authorized to access this route');
+		next();
+	} catch (error) {
+		return next(error);
+	}
+};
+
+module.exports = { isLoggedIn, isLoggedOut, isAdmin };

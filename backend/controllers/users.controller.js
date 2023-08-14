@@ -5,7 +5,7 @@ const createError = require('http-errors');
 const User = require('../models/user.model');
 const { successResponse } = require('./response.controller');
 const { deleteImage } = require('../helpers/deleteImages');
-const { findWithId } = require('../services/findItem');
+const { findWithId } = require('../services/findItem.service');
 
 const getUsers = async (req, res, next) => {
 	try {

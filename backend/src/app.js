@@ -10,13 +10,12 @@ const cookieParser = require('cookie-parser');
 // importing routes and controllers
 const userRouter = require('../routes/users.routes');
 const registerRouter = require('../routes/register.routes');
-const adminRouter = require('../routes/admin.routes');
 const seedRouter = require('../routes/seed.routes');
 const authRouter = require('../routes/auth.routes');
 
 const { getHome } = require('../controllers/home.controller');
 const { errorResponse } = require('../controllers/response.controller');
-const categoryRouter = require('../routes/categoryRouter');
+const categoryRouter = require('../routes/category.routes');
 
 // creating app
 const app = express();
@@ -43,9 +42,8 @@ app.use(express.static('public'));
 app.use('/api/users', userRouter); //fetch user data
 app.use('/api/seed', seedRouter); // generate dummy data
 app.use('/api/auth', authRouter);
+app.use('/api/category', categoryRouter);
 app.use('/register', registerRouter);
-app.use('/admin', adminRouter);
-app.use('/category', categoryRouter);
 
 app.get('/', getHome);
 
