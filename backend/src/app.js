@@ -5,15 +5,16 @@ const morgan = require('morgan');
 const xssClean = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const createError = require('http-errors');
+const cookieParser = require('cookie-parser');
 
 // importing routes and controllers
 const userRouter = require('../routes/users.routes');
-const loginRouter = require('../routes/login.routes');
 const registerRouter = require('../routes/register.routes');
 const adminRouter = require('../routes/admin.routes');
 const seedRouter = require('../routes/seed.routes');
+const authRouter = require('../routes/auth.routes');
+
 const { getHome } = require('../controllers/home.controller');
-const Admin = require('../models/admin.model');
 const { errorResponse } = require('../controllers/response.controller');
 const categoryRouter = require('../routes/categoryRouter');
 
@@ -21,14 +22,15 @@ const categoryRouter = require('../routes/categoryRouter');
 const app = express();
 
 // Rate limiting
-const limiter = rateLimit({
+const rateLimiter = rateLimit({
 	windowMs: 1 * 60 * 1000, // 1 minute
 	max: 10, // 10 requests
 	message: 'Too many requests from this IP, please try again in 1 minute',
 });
 
 // middlewares
-app.use(limiter);
+app.use(cookieParser());
+app.use(rateLimiter);
 app.use(xssClean());
 app.use(cors());
 app.use(morgan('dev'));
@@ -40,7 +42,7 @@ app.use(express.static('public'));
 
 app.use('/api/users', userRouter); //fetch user data
 app.use('/api/seed', seedRouter); // generate dummy data
-app.use('/login', loginRouter);
+app.use('/api/auth', authRouter);
 app.use('/register', registerRouter);
 app.use('/admin', adminRouter);
 app.use('/category', categoryRouter);
