@@ -16,19 +16,23 @@ const userSchema = mongoose.Schema(
 		},
 		name: {
 			type: String,
-			required: true,
+			required: false,
 		},
 		image: {
-			type: Buffer,
+			data: Buffer,
 			contentType: String,
 		},
 		address: {
 			type: String,
-			required: true,
+			required: false,
 		},
 		phone: {
 			type: String,
-			required: true,
+			required: false,
+		},
+		isVerified: {
+			type: Boolean,
+			default: false,
 		},
 		isAdmin: {
 			type: Boolean,

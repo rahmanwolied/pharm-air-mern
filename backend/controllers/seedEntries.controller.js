@@ -13,11 +13,16 @@ const seedUser = async (req, res, next) => {
 
 		const count = Number(req.params.count) || 10;
 
-		const imageBufferString = req.file.buffer.toString('base64');
+		const dir = path.join(__dirname, '..', userUploadFile, 'avatar-default-icon.png');
+
+		const image = {
+			data: fs.readFileSync(dir),
+			contentType: 'image/png',
+		};
 
 		// create dummy users
 		const generatedData = {
-			users: generateUsers(count, imageBufferString),
+			users: generateUsers(count, image),
 		};
 
 		const users = await userModel.insertMany(generatedData.users);
@@ -38,7 +43,7 @@ const seedProducts = async (req, res, next) => {
 	try {
 		// delete existing products
 		await productModel.deleteMany({});
-		const dir = path.join(__dirname, '..', productUploadFile, req.file.filename);
+		const dir = path.join(__dirname, '..', productUploadFile, 'default_image_1.jpg');
 		const image = {
 			data: fs.readFileSync(dir),
 			contentType: 'image/png',

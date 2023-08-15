@@ -8,7 +8,7 @@ const ProductCard = ({ product }) => {
 	return (
 		<div className="card w-96 bg-base-100 border-solid border border-[rgba(18, 18, 18, 0.10)]">
 			<figure className="px-10 pt-10">
-				<img src={`data:image/png;base64,${base64String}`} alt="" />
+				<img src={base64String} alt="" />
 			</figure>
 			<div className="card-body items-center text-center">
 				<h2 className="card-title">{product.name}</h2>

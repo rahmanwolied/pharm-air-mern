@@ -10,8 +10,6 @@ const uploadProduct = uploadFile(productUploadFile);
 
 router.get('/users', uploadUser.single('image'), seedUser);
 router.get('/users/:count', uploadUser.single('image'), seedUser);
-router.get('/products', uploadProduct.single('image'), seedProducts);
-
 router.get('/products', seedProducts);
 
 module.exports = router;

@@ -2,8 +2,11 @@ import LoginModal from './LoginModal';
 import CartDropdown from './CartDropdown';
 import { Link } from 'react-router-dom';
 import UserIcon from './UserIcon';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 function Navbar() {
+	const { user } = useAuthContext();
+
 	return (
 		<div className="navbar bg-base-100">
 			<div className="flex-1">
@@ -22,9 +25,20 @@ function Navbar() {
 					<li>
 						<Link to="/about">About</Link>
 					</li>
-					<CartDropdown />
-					<LoginModal />
-					<UserIcon />
+					{!user && (
+						<div className="flex justify-center items-center">
+							<li>
+								<Link to="/signup">Sign Up</Link>
+							</li>
+							<LoginModal />
+						</div>
+					)}
+					{user && (
+						<div className="flex justify-center items-center">
+							<CartDropdown />
+							<UserIcon />
+						</div>
+					)}
 				</ul>
 			</div>
 		</div>

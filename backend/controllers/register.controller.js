@@ -1,9 +1,10 @@
 const path = require('path');
 const User = require('../models/user.model');
 const createError = require('http-errors');
+const fs = require('fs');
 const { successResponse } = require('./response.controller');
 const { createJSONWebToken } = require('../helpers/jsonWebToken');
-const { jwtActivationKey, clientURL } = require('../src/secret');
+const { jwtActivationKey, clientURL, userUploadFile } = require('../src/secret');
 const { sendEmail } = require('../helpers/email');
 const jwt = require('jsonwebtoken');
 
@@ -17,9 +18,21 @@ const createUser = async (req, res, next) => {
 			throw createError(409, 'User with this email already exists');
 		}
 
-		const imageBufferString = req.file.buffer.toString('base64');
+		let dir = '';
+		if (!req.file) {
+			dir = path.join(__dirname, '..', userUploadFile, 'avatar-default-icon.png');
+		} else {
+			dir = path.join(__dirname, '..', userUploadFile, req.file.filename);
+		}
 
-		const token = createJSONWebToken({ name, email, password, address, phone, image: imageBufferString }, jwtActivationKey, '10m');
+		const image = {
+			data: fs.readFileSync(dir),
+			contentType: 'image/png',
+		};
+
+		req.body.image = image;
+
+		const token = createJSONWebToken(req.body, jwtActivationKey, '10m');
 
 		const emailTemplate = {
 			email,
@@ -37,10 +50,13 @@ const createUser = async (req, res, next) => {
 		// 	return;
 		// }
 
+		const user = await User.create(req.body);
+
 		return successResponse(res, {
 			statusCode: 201,
 			message: 'Check your email for activation link',
 			payload: {
+				user,
 				token,
 			},
 		});
@@ -56,13 +72,12 @@ const activateUser = async (req, res, next) => {
 
 		const decoded = jwt.verify(token, jwtActivationKey);
 
-		await User.create(decoded);
-
 		if (!decoded) throw createError(400, 'User not verified');
 
 		return successResponse(res, {
 			statusCode: 201,
 			message: 'User activated successfully',
+			payload: { decoded },
 		});
 	} catch (error) {
 		next(error);
