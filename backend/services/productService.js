@@ -32,8 +32,8 @@ const createProduct = async (productData) => {
 
     } ;
 
-const getProducts = async (page=1,limit=4)=>{
-    const products = await Product.find({})
+const getProducts = async (page=1,limit=4,filter={})=>{
+    const products = await Product.find(filter)
        .populate('category')
        .skip(page -1) * limit
        .limit(limit)
@@ -41,7 +41,7 @@ const getProducts = async (page=1,limit=4)=>{
 
        if(!products)throw createError(404,"no products found");
 
-       const count = await Product.find({}).countDocuments();
+       const count = await Product.find(filter).countDocuments();
        return { products,count,totalPages:Math.ceil(count/limit),currentPage:page};
 };
 
@@ -53,7 +53,50 @@ const getProductBySlug = async (slug)=>{
        return product;
 };
 
+const deleteProductBySlug = async (slug)=>{
+       const product = await Producct.findOneAndDelete({slug})
+
+       if(!products)throw createError(404,"no products found");
+
+       return product;
+};
+
+const updateProductBySlug = async (slug,updates,image,updateOptions)=>{
+    
+    
+
+    if(updates.name){
+        updates.slug = slugify(updates.name);
+    }
 
 
-module.exports={createProduct,getProducts,getProductBySlug};
+
+    
+     if(image){
+        if(image.size>1024*1024*2){
+            throw new Error("file too large")
+        }
+        updates.image.buffer.toString("base64");
+     }
+
+    const updatedProduct =await Product.findOneAndUpdate(
+        {slug},
+        updates,
+        updateOptions
+    );
+    
+    if(!updatedProduct ){
+        throw createError(404,"Product with ID does not exist");
+
+    }
+
+    return updatedProduct;
+
+};
+
+
+
+
+
+module.exports={createProduct,getProducts,getProductBySlug,deleteProductBySlug,updateProductBySlug};
 

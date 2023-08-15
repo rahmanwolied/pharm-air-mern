@@ -52,11 +52,31 @@ const handleCreateProduct =async(req,res,next)=>{
 const handleGetProducts =async(req,res,next)=>{
     
    try{
-
+    const search = req.query.search || "";
     const page= parseInt(req.query.page) || 1;
     const limit=parseInt(req.query.limit) || 4;
     
-    const productsData =await getProducts(page,limit); 
+
+
+    const searchRegExp = new RegExp(".*"+search+".*","i");
+
+    const filter ={
+        $or:[
+            {name:{regex : searchRegExp}},
+        ]
+    };
+
+
+
+
+
+
+
+
+
+
+
+    const productsData =await getProducts(page,limit,filter); 
 
    
     return successResponse(res,{
@@ -97,10 +117,66 @@ const handleGetProduct =async(req,res,next)=>{
     next(error);
 }
 
+const handleDeleteProduct =async(req,res,next)=>{
+    
+   try{
+
+    const {slug} = req.params;
+
+    const product = await deleteProductBySlug(slug);
+    
+    return successResponse(res,{
+        statusCode:200,
+        message:"deleted single product",
+        
+        
+    });
+} catch (error){
+    next(error);
+}
+}
+const handleUpdateProduct =async(req,res,next)=>{
+    
+   try{
+
+    const {slug} = req.params;
+    const updateOptions ={new:true,runValidators:true,context:"query"};
+
+    let updates={};
+    const allowedFields=["name","description","price","quantity","shipping"]
+    
+    for (const key in req.body){
+        if (allowedFields.includes(key)){
+            updates[key]=req.body[key];
+
+        }
+    }
+
+    const image =req.file;
+    
+    const updatedProduct = await updateProductBySlug(slug,updates,image,updateOptions)
+
+
+
+
+
+
+
+    
+    return successResponse(res,{
+        statusCode:200,
+        message:"deleted single product",
+        
+        
+    });
+} catch (error){
+    next(error);
+}
+
 
 }
 
 
+}
 
-
-module.exports = { handleCreateProduct,handleGetProducts,handleGetProduct };
+module.exports = { handleCreateProduct,handleGetProducts,handleGetProduct,handleDeleteProduct,handleUpdateProduct};

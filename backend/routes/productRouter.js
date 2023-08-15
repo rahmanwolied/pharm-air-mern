@@ -14,5 +14,9 @@ handleCreateProduct);
 productRouter.get('/',handleGetProducts);
 //get single product
 productRouter.get('/:slug',handleGetProduct);
+//delete single product
+productRouter.delete('/: slug',isAdmin,handleDeleteProduct);
+//update a single product
+productRouter.put('/: slug',isAdmin,handleUpdateProduct);
 
 module.exports =productRouter;
