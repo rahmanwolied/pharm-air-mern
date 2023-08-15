@@ -49,5 +49,58 @@ const handleCreateProduct =async(req,res,next)=>{
     }
 
 
+const handleGetProducts =async(req,res,next)=>{
+    
+   try{
 
-module.exports = { handleCreateProduct };
+    const page= parseInt(req.query.page) || 1;
+    const limit=parseInt(req.query.limit) || 4;
+    
+    const productsData =await getProducts(page,limit); 
+
+   
+    return successResponse(res,{
+        statusCode:200,
+        message:"returned all the products",
+        payload: {
+                  products:productsData.products,
+                  pagination:{
+                    totalPages: productsData.totalPages,
+                    currentPage:productsData.currentPage,
+                    previousPage:productsData.currentPagep-1,
+                    nextPage:productsData.currentPage+1,
+                    totalNumberOfProducts:productsData.count,
+                  },
+        },
+    });
+} catch (error){
+    next(error);
+}
+
+
+}
+const handleGetProduct =async(req,res,next)=>{
+    
+   try{
+
+    const {slug} = req.params;
+
+    const product = await getProductBySlug(slug);
+    
+    return successResponse(res,{
+        statusCode:200,
+        message:"returned single product",
+        payload: {product},
+        
+    });
+} catch (error){
+    next(error);
+}
+
+
+}
+
+
+
+
+module.exports = { handleCreateProduct,handleGetProducts,handleGetProduct };
