@@ -28,12 +28,12 @@ const createUser = async (req, res, next) => {
 		};
 
 		// send email
-		try {
-			await sendEmail(emailTemplate);
-		} catch (error) {
-			next(createError(500, 'Error sending email'));
-			return;
-		}
+		// try {
+		// 	await sendEmail(emailTemplate);
+		// } catch (error) {
+		// 	next(createError(500, 'Error sending email'));
+		// 	return;
+		// }
 
 		return successResponse(res, {
 			statusCode: 201,

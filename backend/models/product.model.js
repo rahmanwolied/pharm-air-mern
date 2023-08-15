@@ -11,7 +11,8 @@ const productSchema = mongoose.Schema(
 			trim: true,
 		},
 		image: {
-			type: String,
+			type: Buffer,
+			contentType: String,
 			default: defaultAvatarPath,
 			required: false,
 		},
