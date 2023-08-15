@@ -19,9 +19,8 @@ const userSchema = mongoose.Schema(
 			required: true,
 		},
 		image: {
-			type: String,
-			default: defaultAvatarPath,
-			required: false,
+			type: Buffer,
+			contentType: String,
 		},
 		address: {
 			type: String,

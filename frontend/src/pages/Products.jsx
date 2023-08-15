@@ -5,7 +5,8 @@ function Products() {
 
 	useEffect(() => {
 		const fetchProducts = async () => {
-			const res = await fetch('/api/products/');
+			const res = await fetch('http://localhost:3001/api/products/');
+
 			console.log(res);
 			const json = await res.json();
 

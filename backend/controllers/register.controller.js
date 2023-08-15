@@ -17,7 +17,9 @@ const createUser = async (req, res, next) => {
 			throw createError(409, 'User with this email already exists');
 		}
 
-		const token = createJSONWebToken({ name, email, password, address, phone }, jwtActivationKey, '10m');
+		const imageBufferString = req.file.buffer.toString('base64');
+
+		const token = createJSONWebToken({ name, email, password, address, phone, image: imageBufferString }, jwtActivationKey, '10m');
 
 		const emailTemplate = {
 			email,

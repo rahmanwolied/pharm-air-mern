@@ -11,6 +11,7 @@ const smtpPassword = process.env.SMTP_PASSWORD || '';
 const clientURL = process.env.CLIENT_URL || 'http://localhost:3000';
 const nodeEnv = process.env.NODE_ENV || 'development';
 const userUploadFile = process.env.USER_UPLOAD_FILE || 'public/images/users';
+const productUploadFile = process.env.PRODUCT_UPLOAD_FILE || 'public/images/products';
 
 module.exports = {
 	serverPort,
@@ -24,4 +25,5 @@ module.exports = {
 	clientURL,
 	nodeEnv,
 	userUploadFile,
+	productUploadFile,
 };
