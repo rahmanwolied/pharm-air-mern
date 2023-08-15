@@ -11,9 +11,8 @@ const productSchema = mongoose.Schema(
 			trim: true,
 		},
 		image: {
-			type: String,
-			default: defaultAvatarPath,
-			required: false,
+			data: Buffer,
+			contentType: String,
 		},
 		slug: {
 			type: String,
@@ -69,12 +68,6 @@ const productSchema = mongoose.Schema(
 		shipping: {
 			type: Number,
 			default: 0,
-		},
-
-		image: {
-			type: Buffer,
-			contentType: String,
-			required: [true, 'product image is required'],
 		},
 
 		category: {
