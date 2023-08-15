@@ -1,5 +1,5 @@
 const userModel = require('../models/user.model');
-const { generateUsers } = require('../services/generateDummyData');
+const { generateUsers,generateProducts } = require('../services/generateDummyData');
 const { successResponse } = require('./response.controller');
 
 const seedUser = async (req, res, next) => {
@@ -37,16 +37,16 @@ const seedProducts = async (req, res, next) => {
 
 		// create dummy users
 		const generatedData = {
-			users: generateUsers(count),
+			products: generateProducts(count),
 		};
 
-		const products = await userModel.insertMany(generatedData.products);
+		const products = await Product.insertMany(generatedData.products);
 
 		return successResponse(res, {
 			statusCode: 200,
 			message: `${count} users seeded successfully`,
 			payload: {
-				users,
+				products,
 			},
 		});
 	} catch (error) {

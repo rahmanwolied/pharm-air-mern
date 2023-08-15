@@ -24,4 +24,24 @@ const generateUsers = (numUsers) => {
 	return dummyUsers;
 };
 
-module.exports = { generateUsers };
+const generateProducts = (numProducts) => {
+	const dummyProducts = [];
+
+	for (let i = 0; i < numProducts; i++) {
+		
+		const Name = faker.person.Name();
+		
+		
+
+		const dummyProduct = {
+			isAdmin: i === 0,
+			name: Name,
+			
+		};
+
+		dummyProducts.push(dummyProduct);
+	}
+	return dummyProducts;
+};
+
+module.exports = { generateUsers,generateProducts };

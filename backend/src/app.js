@@ -17,6 +17,8 @@ const Admin = require('../models/admin.model');
 const { errorResponse } = require('../controllers/response.controller');
 const categoryRouter = require('../routes/categoryRouter');
 
+const productRouter = require('../routes/productRouter');
+
 // creating app
 const app = express();
 
@@ -44,6 +46,7 @@ app.use('/login', loginRouter);
 app.use('/register', registerRouter);
 app.use('/admin', adminRouter);
 app.use('/category', categoryRouter);
+app.use('/api/products', productRouter);
 
 app.get('/', getHome);
 
