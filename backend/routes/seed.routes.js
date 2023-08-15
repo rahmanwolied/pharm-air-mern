@@ -1,5 +1,4 @@
 const express = require('express');
-
 const { seedUser, seedProducts } = require('../controllers/seedEntries.controller');
 const uploadFile = require('../middlewares/uploadfile');
 const { userUploadFile, productUploadFile } = require('../src/secret');
