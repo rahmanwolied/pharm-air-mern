@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
+import CartItem from '../components/CartItem';
 
 const ShoppingCart = () => {
 	const { user } = useAuthContext();
@@ -14,16 +15,27 @@ const ShoppingCart = () => {
 			});
 			const cart = await response.json();
 			setCart(cart.payload);
-			console.log(cart.payload);
 		};
-		if (user) fetchCart();
+		fetchCart();
 	}, [user]);
 
-	const cartItems = cart.items;
-    if (!cartItems) return <div>Cart is Empty</div>;
-    return (
-        
-    )
+	if (cart === null) {
+		return <div>Loading...</div>;
+	}
+
+	console.log('cart:', cart);
+	console.log('cartItems:', cart.items);
+
+	return (
+		<div className="p-4">
+			<h1 className="text-2xl font-semibold mb-4">Shopping Cart</h1>
+			{cart.items.length === 0 ? (
+				<div className="text-gray-600">Your cart is empty.</div>
+			) : (
+				cart.items.map((item) => <CartItem key={item.id} item={item} />)
+			)}
+		</div>
+	);
 };
 
 export default ShoppingCart;

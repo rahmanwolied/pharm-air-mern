@@ -8,7 +8,7 @@ function Navbar() {
 	const { user } = useAuthContext();
 
 	return (
-		<div className="navbar bg-base-100">
+		<div className="navbar bg-base-100 shadow-md">
 			<div className="flex-1">
 				<Link to="/">
 					<div className="flex justify-center items-center mx-4">

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 const Banner = () => {
 	return (
 		<div className="header">
@@ -6,9 +7,9 @@ const Banner = () => {
 					<h1>Get your medicine from PharmAir</h1>
 					<p>Experience the convenience of PharmAir - your trusted partner for timely prescription deliveries.</p>
 				</div>
-				<a className="get-started" href="/register">
+				<Link className="get-started" to="/signup">
 					Get Started
-				</a>
+				</Link>
 			</div>
 		</div>
 	);
