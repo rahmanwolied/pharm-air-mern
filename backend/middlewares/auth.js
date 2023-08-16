@@ -1,18 +1,24 @@
 const createError = require('http-errors');
 const jwt = require('jsonwebtoken');
-const { jwtAccessKey } = require('../src/secret');
+const User = require('../models/user.model');
+const { jwtAccessKey, jwtRefreshKey } = require('../src/secret');
+const { findWithId } = require('../services/findItem.service');
 
-const isLoggedIn = (req, res, next) => {
+const isLoggedIn = async (req, res, next) => {
 	try {
-		const token = req.cookies.accessToken;
+		const token = req.cookies.refreshToken;
 		if (!token) {
 			throw createError(401, 'You are not logged in');
 		}
-		const decoded = jwt.verify(token, jwtAccessKey);
+		const decoded = jwt.verify(token, jwtRefreshKey);
 		if (!decoded) {
 			throw createError(401, 'You are not logged in');
 		}
-		req.user = decoded.user;
+		const user = await findWithId(User, decoded._id);
+		if (!user) {
+			throw createError(401, 'Invalid token. Please login again');
+		}
+		req.body.user = user;
 		next();
 	} catch (error) {
 		return next(error);
@@ -21,7 +27,7 @@ const isLoggedIn = (req, res, next) => {
 
 const isLoggedOut = (req, res, next) => {
 	try {
-		const token = req.cookies.accessToken;
+		const token = req.cookies.refreshToken;
 		if (token) {
 			throw createError(401, 'You are already logged in');
 		}
@@ -32,9 +38,10 @@ const isLoggedOut = (req, res, next) => {
 	}
 };
 
-const isAdmin = (req, res, next) => {
+const isAdmin = async (req, res, next) => {
 	try {
-		if (!req.user.isAdmin) throw createError(403, 'You are not authorized to access this route');
+		const user = await findWithId(User, req.body.userId);
+		if (!user.isAdmin) throw createError(403, 'You are not authorized to access this route');
 		next();
 	} catch (error) {
 		return next(error);

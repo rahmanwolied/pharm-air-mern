@@ -13,6 +13,7 @@ const registerRouter = require('../routes/register.routes');
 const seedRouter = require('../routes/seed.routes');
 const authRouter = require('../routes/auth.routes');
 const productRouter = require('../routes/products.routes');
+const cartRouter = require('../routes/cart.routes');
 
 const { getHome } = require('../controllers/home.controller');
 const { errorResponse } = require('../controllers/response.controller');
@@ -45,6 +46,7 @@ app.use('/api/seed', seedRouter); // generate dummy data
 app.use('/api/auth', authRouter);
 app.use('/api/products', productRouter);
 app.use('/api/category', categoryRouter);
+app.use('/api/cart', cartRouter);
 app.use('/register', registerRouter);
 
 app.get('/', getHome);
