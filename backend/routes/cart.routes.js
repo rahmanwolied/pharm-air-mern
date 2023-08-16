@@ -3,9 +3,10 @@ const { handleAddToCart, handleRemoveFromCart, handleGetCart, handleGetAllCarts 
 const { isLoggedIn } = require('../middlewares/auth');
 const router = express.Router();
 
-router.get('/', isLoggedIn, handleGetCart);
-router.get('/all', isLoggedIn, handleGetAllCarts);
-router.post('/add', isLoggedIn, handleAddToCart);
-router.post('/remove', isLoggedIn, handleRemoveFromCart);
+router.use(isLoggedIn);
+router.get('/', handleGetCart);
+router.get('/all', handleGetAllCarts);
+router.post('/add', handleAddToCart);
+router.post('/remove', handleRemoveFromCart);
 
 module.exports = router;

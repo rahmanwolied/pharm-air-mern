@@ -6,7 +6,11 @@ const { findWithId } = require('../services/findItem.service');
 
 const isLoggedIn = async (req, res, next) => {
 	try {
-		const token = req.cookies.refreshToken;
+		const { authorization } = req.headers;
+		if (!authorization) {
+			throw createError(401, 'You are not logged in');
+		}
+		const token = authorization.split(' ')[1];
 		if (!token) {
 			throw createError(401, 'You are not logged in');
 		}
@@ -14,6 +18,7 @@ const isLoggedIn = async (req, res, next) => {
 		if (!decoded) {
 			throw createError(401, 'You are not logged in');
 		}
+
 		const user = await findWithId(User, decoded._id);
 		if (!user) {
 			throw createError(401, 'Invalid token. Please login again');
