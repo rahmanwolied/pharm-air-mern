@@ -9,7 +9,7 @@ const router = express.Router();
 const uploadUser = uploadFile(userUploadFile);
 const uploadProduct = uploadFile(productUploadFile);
 
-router.use(isAdmin);
+// router.use(isAdmin);
 router.get('/users', uploadUser.single('image'), seedUser);
 router.get('/users/:count', uploadUser.single('image'), seedUser);
 router.get('/products', seedProducts);

@@ -17,11 +17,11 @@ async function addToCart(userId, productId, quantity) {
 		}
 
 		// Check if the product is already in the cart, if so, update the quantity
-		const existingItem = cart.items.find((item) => item.product.equals(product._id));
+		const existingItem = cart.items.find((item) => item.productId.equals(product._id));
 		if (existingItem) {
 			existingItem.quantity += quantity;
 		} else {
-			cart.items.push({ product: product._id, quantity });
+			cart.items.push({ productId: product._id, quantity });
 		}
 
 		// Update the total cost of the cart
@@ -42,11 +42,12 @@ async function removeFromCart(userId, productId) {
 		}
 
 		const cart = await ShoppingCart.findOne({ user: userId, isActive: true });
+		console.log(cart);
 		if (!cart) {
 			throw createError(404, 'Cart not found');
 		}
 
-		const itemIndex = cart.items.findIndex((item) => item.product.equals(product._id));
+		const itemIndex = cart.items.findIndex((item) => item.productId.equals(product._id));
 		if (itemIndex === -1) {
 			throw createError(404, 'Product not found in cart');
 		}
@@ -58,7 +59,7 @@ async function removeFromCart(userId, productId) {
 
 		await cart.save();
 
-		return removedItem;
+		return cart;
 	} catch (error) {
 		throw error;
 	}

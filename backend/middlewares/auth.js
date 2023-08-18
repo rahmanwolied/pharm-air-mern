@@ -1,22 +1,22 @@
 const createError = require('http-errors');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
-const { jwtAccessKey, jwtRefreshKey } = require('../src/secret');
+const { jwtRefreshKey } = require('../src/secret');
 const { findWithId } = require('../services/findItem.service');
 
 const isLoggedIn = async (req, res, next) => {
 	try {
 		const { authorization } = req.headers;
 		if (!authorization) {
-			throw createError(401, 'You are not logged in');
+			throw createError(401, 'No authorization header');
 		}
 		const token = authorization.split(' ')[1];
 		if (!token) {
-			throw createError(401, 'You are not logged in');
+			throw createError(401, 'No token found');
 		}
 		const decoded = jwt.verify(token, jwtRefreshKey);
 		if (!decoded) {
-			throw createError(401, 'You are not logged in');
+			throw createError(401, 'Invalid or expired token');
 		}
 
 		const user = await findWithId(User, decoded._id);

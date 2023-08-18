@@ -29,7 +29,7 @@ const generateProducts = (image) => {
 	const products = [
 		{
 			name: 'Montair',
-			image: image,
+			// image: image,
 			slug: 'montair',
 			description: 'Relieve your allergies with Montair tablets.',
 			price: 16,
@@ -40,7 +40,7 @@ const generateProducts = (image) => {
 		},
 		{
 			name: 'Encilor',
-			image: image,
+			// image: image,
 			slug: 'encilor',
 			description: 'Keep your stomach healthy with Encilor capsules.',
 			price: 3,
@@ -49,10 +49,9 @@ const generateProducts = (image) => {
 			shipping: 0,
 			category: '64da55bb43d422a475297a6c', // Tablets
 		},
-		// ... (other products)
 		{
 			name: 'NeoStrip Bandage',
-			image: image,
+			// image: image,
 			slug: 'neostrip-bandage',
 			description: 'Protect your wounds with NeoStrip Bandage.',
 			price: 1,
@@ -63,7 +62,7 @@ const generateProducts = (image) => {
 		},
 		{
 			name: 'Camlodin',
-			image: image,
+			// image: image,
 			slug: 'camlodin',
 			description: 'Camlodin capsules for maintaining cardiovascular health.',
 			price: 5,
@@ -74,7 +73,7 @@ const generateProducts = (image) => {
 		},
 		{
 			name: 'Moxaclav Forte',
-			image: image,
+			// image: image,
 			slug: 'moxaclav-forte',
 			description: 'Moxaclav Forte for powerful antibiotic action.',
 			price: 207,

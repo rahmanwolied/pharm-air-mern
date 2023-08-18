@@ -5,7 +5,8 @@ const createError = require('http-errors');
 const handleAddToCart = async (req, res, next) => {
 	try {
 		const { user, productId, quantity } = req.body;
-		const userId = user;
+		const userId = user._id;
+		console.log(userId);
 		if (!productId || !quantity) {
 			throw createError(401, 'Product id and quantity are required');
 		}
@@ -29,6 +30,7 @@ const handleRemoveFromCart = async (req, res, next) => {
 	try {
 		const { user, productId } = req.body;
 		const userId = user;
+		console.log(productId);
 		if (!productId) {
 			throw createError(401, 'Product id is required');
 		}

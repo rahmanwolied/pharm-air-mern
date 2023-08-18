@@ -1,30 +1,15 @@
-import { useEffect, useState } from 'react';
-import { useAuthContext } from '../hooks/useAuthContext';
+import { useState, useContext } from 'react';
+import { CartContext } from '../context/CartContext';
 import CartItem from '../components/CartItem';
+import SuccessAlert from '../components/SuccessAlert';
 
 const ShoppingCart = () => {
-	const { user } = useAuthContext();
-	const [cart, setCart] = useState(null);
-
-	useEffect(() => {
-		const fetchCart = async () => {
-			const response = await fetch('http://localhost:3001/api/cart/', {
-				headers: {
-					Authorization: 'Bearer ' + user.refreshToken,
-				},
-			});
-			const cart = await response.json();
-			setCart(cart.payload);
-		};
-		fetchCart();
-	}, [user]);
+	const { cart } = useContext(CartContext);
+	const [success, setSuccess] = useState(false);
 
 	if (cart === null) {
 		return <div>Loading...</div>;
 	}
-
-	console.log('cart:', cart);
-	console.log('cartItems:', cart.items);
 
 	return (
 		<div className="p-4">
@@ -32,8 +17,16 @@ const ShoppingCart = () => {
 			{cart.items.length === 0 ? (
 				<div className="text-gray-600">Your cart is empty.</div>
 			) : (
-				cart.items.map((item) => <CartItem key={item.id} item={item} />)
+				<div>
+					{cart.items.map((item) => (
+						<CartItem key={item.productId} item={item} setSuccess={setSuccess} />
+					))}
+				</div>
 			)}
+			{success && <SuccessAlert message="Item removed from cart." />}
+			<div>
+				<div className="text-gray-700 font-bold">Total: ${cart.total.toFixed(2)}</div>
+			</div>
 		</div>
 	);
 };

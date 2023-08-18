@@ -16,7 +16,6 @@ const handleGetAllProducts = async (req, res, next) => {
 
 const handleGetProduct = async (req, res, next) => {
 	try {
-		const id = req.params.id;
 		const product = await getProduct(req.params.id);
 		return successResponse(res, {
 			statusCode: 200,
