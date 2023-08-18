@@ -1,22 +1,43 @@
 const { successResponse } = require('../controllers/response.controller');
 const createError = require('http-errors');
+const Cart = require('../models/cart.model');
+const Order = require('../models/order.model');
+const { findWithId } = require('../services/findItem.service');
 
 const handleCheckout = async (req, res, next) => {
 	try {
-		const { user, cartId } = req.body;
-		const userId = user._id;
-		if (!productId || !quantity) {
-			throw createError(401, 'Product id and quantity are required');
+		const { user, cartId, paymentMethod } = req.body;
+
+		console.log(cartId, paymentMethod);
+
+		const cart = await Cart.findById(cartId);
+		if (!cart) {
+			throw createError(404, 'Cart not found');
 		}
 
-		const cart = await addToCart(userId, productId, quantity);
-		console.log(cart);
+		if (JSON.stringify(cart.user) !== JSON.stringify(user._id)) {
+			throw createError(401, 'Unauthorized');
+		}
+		if (cart.items.length === 0) {
+			throw createError(400, 'Cart is empty');
+		}
 
-		if (cart) {
+		const order = await Order.create({
+			user: user._id,
+			items: cart.items,
+			total: cart.total,
+			paymentMethod,
+		});
+
+		if (order) {
+			cart.isActive = false;
+			await cart.save();
+			await Cart.create({ user: user._id, items: [] });
+
 			successResponse(res, {
 				statusCode: 200,
-				message: 'Product added to cart successfully',
-				payload: cart,
+				message: 'Order placed successfully',
+				payload: order,
 			});
 		}
 	} catch (error) {

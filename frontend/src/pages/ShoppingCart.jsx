@@ -2,10 +2,12 @@ import { useState, useContext } from 'react';
 import { CartContext } from '../context/CartContext';
 import CartItem from '../components/CartItem';
 import SuccessAlert from '../components/SuccessAlert';
+import CheckoutModal from '../components/CheckoutModal';
 
 const ShoppingCart = () => {
 	const { cart } = useContext(CartContext);
 	const [success, setSuccess] = useState(false);
+	const [checkoutSuccess, setCheckoutSuccess] = useState(false);
 
 	if (cart === null) {
 		return <div>Loading...</div>;
@@ -27,6 +29,16 @@ const ShoppingCart = () => {
 			<div>
 				<div className="text-gray-700 font-bold">Total: ${cart.total.toFixed(2)}</div>
 			</div>
+
+			{cart.items.length === 0 ? (
+				<button className="btn btn-disabled hover:bg-green-500 hover:scale-110 my-10">Checkout</button>
+			) : (
+				<button className="btn btn-success hover:bg-green-500 hover:scale-110 my-10" onClick={() => window.payment_modal.showModal()}>
+					Checkout
+				</button>
+			)}
+			<CheckoutModal setSuccess={setCheckoutSuccess} />
+			{checkoutSuccess && <SuccessAlert message="Checkout successful." />}
 		</div>
 	);
 };
