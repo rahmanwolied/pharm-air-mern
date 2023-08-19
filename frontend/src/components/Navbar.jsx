@@ -45,6 +45,7 @@ function Navbar() {
 					)}
 					{user && (
 						<div className="flex justify-center items-center">
+							<h1 className="mx-3">{user.user.name}</h1>
 							<CartDropdown />
 							<UserIcon />
 						</div>
