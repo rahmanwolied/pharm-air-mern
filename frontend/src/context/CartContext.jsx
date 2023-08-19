@@ -40,7 +40,7 @@ export const CartContextProvider = ({ children }) => {
 				});
 			}
 		};
-		fetchCart();
+		if (user) fetchCart();
 	}, [user]);
 
 	console.log('CartContext state', state);

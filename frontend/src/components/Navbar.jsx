@@ -6,6 +6,11 @@ import { useAuthContext } from '../hooks/useAuthContext';
 
 function Navbar() {
 	const { user } = useAuthContext();
+	let isAdmin = false;
+
+	if (user) {
+		isAdmin = user.user.isAdmin;
+	}
 
 	return (
 		<div className="navbar bg-base-100 shadow-md">
@@ -25,6 +30,11 @@ function Navbar() {
 					<li>
 						<Link to="/about">About</Link>
 					</li>
+					{isAdmin && (
+						<li>
+							<a href="\admin\admin.html">Admin</a>
+						</li>
+					)}
 					{!user && (
 						<div className="flex justify-center items-center">
 							<li>

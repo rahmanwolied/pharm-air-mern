@@ -11,8 +11,8 @@ const {
 
 router.get('/', handleGetAllProducts);
 router.get('/:id', handleGetProduct);
-productRouter.post('/', isLoggedIn, isAdmin, handleCreateProduct);
-productRouter.put('/:slug', isLoggedIn, isAdmin, handleUpdateProduct);
-productRouter.delete('/:slug', isLoggedIn, isAdmin, handleDeleteProduct);
+router.post('/', isLoggedIn, isAdmin, handleCreateProduct);
+router.put('/:slug', isLoggedIn, isAdmin, handleUpdateProduct);
+router.delete('/:slug', isLoggedIn, isAdmin, handleDeleteProduct);
 
 module.exports = router;

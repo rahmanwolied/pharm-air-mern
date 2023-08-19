@@ -1,4 +1,3 @@
-const Product = require('../models/product.model');
 const { findWithId } = require('./findItem.service');
 
 const slugify = require('slugify');
