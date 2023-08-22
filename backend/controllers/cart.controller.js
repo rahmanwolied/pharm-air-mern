@@ -51,7 +51,7 @@ const handleRemoveFromCart = async (req, res, next) => {
 const handleGetCart = async (req, res, next) => {
 	try {
 		const { user } = req.body;
-		const userId = user;
+		const userId = user._id;
 		const cart = await getCart(userId);
 		if (cart) {
 			successResponse(res, {

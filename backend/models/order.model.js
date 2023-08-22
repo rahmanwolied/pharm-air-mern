@@ -1,10 +1,21 @@
 const mongoose = require('mongoose');
 
+const userSchema = mongoose.Schema({
+	name: {
+		type: String,
+		required: true,
+	},
+	email: {
+		type: String,
+		unique: true,
+		required: [true, 'Email is required'],
+	},
+});
+
 const orderSchema = mongoose.Schema(
 	{
 		user: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'User',
+			type: userSchema,
 			required: true,
 		},
 		items: [],

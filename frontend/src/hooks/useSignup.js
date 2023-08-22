@@ -4,16 +4,18 @@ import { useAuthContext } from './useAuthContext';
 export const useSignup = () => {
 	const [error, setError] = useState(null);
 	const [isLoading, setIsLoading] = useState(null);
+	const [success, setSuccess] = useState(null);
 	const { dispatch } = useAuthContext();
 
-	const signup = async (email, password) => {
+	const signup = async (name, email, address, password) => {
 		setIsLoading(true);
 		setError(null);
+		setSuccess(null);
 
 		const response = await fetch('http://localhost:3001/register', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ email, password }),
+			body: JSON.stringify({ name, email, address, password }),
 		});
 
 		const json = await response.json();
@@ -28,8 +30,9 @@ export const useSignup = () => {
 			// dispatch the user to the reducer
 			dispatch({ type: 'LOGIN', payload: json.payload });
 			setIsLoading(false);
+			setSuccess(true);
 		}
 	};
 
-	return { signup, error, isLoading };
+	return { signup, error, setError, isLoading, success };
 };

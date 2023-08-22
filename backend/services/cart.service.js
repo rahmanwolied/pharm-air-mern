@@ -67,9 +67,10 @@ async function removeFromCart(userId, productId) {
 
 async function getCart(userId) {
 	try {
-		const cart = await ShoppingCart.findOne({ user: userId, isActive: true });
+		let cart = await ShoppingCart.findOne({ user: userId, isActive: true });
 		if (!cart) {
-			throw createError(404, 'Cart not found');
+			cart = await ShoppingCart.create({ user: userId, items: [] });
+			console.log('cart', cart);
 		}
 
 		return cart;

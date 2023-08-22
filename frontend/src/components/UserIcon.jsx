@@ -8,6 +8,7 @@ function UserIcon() {
 
 	const handleClick = () => {
 		logout();
+		window.location.href = '/';
 	};
 
 	const buffer = user.user.image.data.data;

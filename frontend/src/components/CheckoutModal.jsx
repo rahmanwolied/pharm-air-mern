@@ -1,26 +1,21 @@
 import { useState } from 'react';
 import { useCheckout } from '../hooks/useCheckout';
 
-const CheckoutModal = ({ setSuccess }) => {
-	const { checkout } = useCheckout();
+const CheckoutModal = ({ setSuccess, setError }) => {
+	const { checkout, error, success, isLoading } = useCheckout();
 	const [selectedMethod, setSelectedMethod] = useState('');
-	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState(null);
 
 	const handleRadioChange = (event) => {
 		setSelectedMethod(event.target.value);
 	};
 
 	const handleConfirm = async () => {
-		setLoading(true);
-		await checkout(selectedMethod, setError);
-		setSuccess(true);
-		setLoading(false);
+		await checkout(selectedMethod, setError, setSuccess);
 	};
 
 	return (
 		<dialog id="payment_modal" className="modal">
-			<form method="dialog" className="modal-box">
+			<form method="dialog" className="modal-box" onSubmit={handleConfirm}>
 				<h3 className="font-bold text-lg">Select Payment Method</h3>
 				<div className="py-4">
 					<label className="flex items-center space-x-2">
@@ -34,11 +29,11 @@ const CheckoutModal = ({ setSuccess }) => {
 				</div>
 				<div className="modal-action">
 					<button className="btn">Close</button>
-					<button className="btn btn-primary" onClick={handleConfirm}>
+					<button className="btn btn-primary" type="submit">
 						Confirm
 					</button>
 				</div>
-				{loading && <span className="loading loading-lg"></span>}
+				{isLoading && <span className="loading loading-lg"></span>}
 			</form>
 		</dialog>
 	);
