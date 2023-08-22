@@ -5,9 +5,13 @@ import { CartContext } from '../context/CartContext';
 export const useCheckout = () => {
 	const { user } = useAuthContext();
 	const { cart, dispatch } = useContext(CartContext);
-	const [error, setError] = useState(null);
+	const [isLoading, setIsLoading] = useState(null);
 
-	const checkout = async (paymentMethod) => {
+	const checkout = async (paymentMethod, setError, setSuccess) => {
+		setIsLoading(true);
+		setSuccess(false);
+		setError(null);
+
 		const urlencoded = new URLSearchParams();
 		urlencoded.append('cartId', cart._id);
 		urlencoded.append('paymentMethod', paymentMethod);
@@ -21,15 +25,18 @@ export const useCheckout = () => {
 			body: urlencoded,
 		});
 		const json = await response.json();
-		cart.items = [];
 
 		if (!response.ok) {
+			setIsLoading(false);
 			setError(json.error);
 		} else {
+			cart.items = [];
+			setIsLoading(false);
+			setSuccess(true);
 			dispatch({ type: 'UPDATE', payload: cart });
-			console.log(json);
+			console.log('success', json);
 		}
 	};
 
-	return { checkout, error };
+	return { checkout, isLoading };
 };

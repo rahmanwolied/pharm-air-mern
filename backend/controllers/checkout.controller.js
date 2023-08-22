@@ -23,7 +23,10 @@ const handleCheckout = async (req, res, next) => {
 		}
 
 		const order = await Order.create({
-			user: user._id,
+			user: {
+				name: user.name,
+				email: user.email,
+			},
 			items: cart.items,
 			total: cart.total,
 			paymentMethod,

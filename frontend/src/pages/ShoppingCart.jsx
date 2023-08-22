@@ -7,6 +7,7 @@ import CheckoutModal from '../components/CheckoutModal';
 const ShoppingCart = () => {
 	const { cart } = useContext(CartContext);
 	const [success, setSuccess] = useState(false);
+	const [error, setError] = useState(null);
 	const [checkoutSuccess, setCheckoutSuccess] = useState(false);
 
 	if (cart === null) {
@@ -37,8 +38,9 @@ const ShoppingCart = () => {
 					Checkout
 				</button>
 			)}
-			<CheckoutModal setSuccess={setCheckoutSuccess} />
+			<CheckoutModal setSuccess={setCheckoutSuccess} setError={setError} />
 			{checkoutSuccess && <SuccessAlert message="Checkout successful." />}
+			{error && <div className="alert alert-error">{error}</div>}
 		</div>
 	);
 };

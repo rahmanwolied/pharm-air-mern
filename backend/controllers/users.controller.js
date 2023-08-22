@@ -25,9 +25,7 @@ const getUsers = async (req, res, next) => {
 			image: 0, // exclude password and image from result
 		};
 
-		const users = await User.find(filter, options)
-			.limit(limit)
-			.skip((page - 1) * limit);
+		const users = await User.find({});
 
 		const count = await User.find(filter).countDocuments();
 

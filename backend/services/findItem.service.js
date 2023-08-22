@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 
 const findWithId = async (Model, id, options = {}) => {
 	try {
+		console.log('id:', id);
 		const item = await Model.findById(id, options);
-
 		if (!item) {
 			console.log('Item does not exist');
 			throw createError(404, `${Model.modelName} with this id does not exist`);

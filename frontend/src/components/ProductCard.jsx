@@ -43,7 +43,7 @@ const ProductCard = ({ product }) => {
 		<div>
 			<div className="max-w-xs bg-white rounded-lg shadow-lg overflow-hidden">
 				<img
-					src={base64String ? base64String : 'public\\assets\\products\\default_image_1.jpg'}
+					src={base64String ? base64String : 'assets\\products\\default_image_1.jpg'}
 					alt={product.name}
 					className="object-cover h-48 w-full"
 				/>

@@ -45,7 +45,7 @@ const CartItem = ({ item, setSuccess }) => {
 		return (
 			<div className="flex items-center p-4 border-b border-gray-200">
 				<img
-					src={base64String ? base64String : 'public\\assets\\products\\default_image_1.jpg'}
+					src={base64String ? base64String : 'assets\\products\\default_image_1.jpg'}
 					alt={product.name}
 					className="w-16 h-16 object-cover mr-4"
 				/>

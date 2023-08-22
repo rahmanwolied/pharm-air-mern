@@ -7,6 +7,6 @@ const { userUploadFile } = require('../src/secret');
 const upload = uploadFile(userUploadFile);
 
 router.post('/', upload.single('image'), createUser);
-router.post('/verify', activateUser);
+router.get('/verify/:token/', activateUser);
 
 module.exports = router;

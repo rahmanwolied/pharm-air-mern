@@ -1,74 +1,84 @@
-// admin.js
+async function convertDate(originalDateString) {
+	const date = new Date(originalDateString);
 
-// Function to fetch and update total orders
-function fetchTotalOrders() {
-	fetch('https://api.example.com/orders')
-		.then((response) => response.json())
-		.then((data) => {
-			const totalOrdersElement = document.getElementById('total-orders');
-			totalOrdersElement.textContent = data.totalOrders;
-		})
-		.catch((error) => console.error('Error fetching total orders:', error));
+	const options = { year: 'numeric', month: 'long', day: 'numeric' };
+	return date.toLocaleDateString('en-US', options);
 }
 
-// Function to fetch and update total customers
-function fetchTotalCustomers() {
-	fetch('https://api.example.com/customers')
-		.then((response) => response.json())
-		.then((data) => {
-			const totalCustomersElement = document.getElementById('total-customers');
-			totalCustomersElement.textContent = data.totalCustomers;
-		})
-		.catch((error) => console.error('Error fetching total customers:', error));
+async function getCustomer(customerId, user) {
+	try {
+		const response = await fetch(`http://localhost:3001/api/users/get/${customerId}`, {
+			headers: {
+				Authorization: 'Bearer ' + user.refreshToken,
+			},
+		});
+		const json = await response.json();
+		console.log(json);
+		return json.payload.user;
+	} catch (error) {
+		console.error('Error fetching customer name:', error);
+	}
 }
 
-// Function to fetch and update recent orders
-function fetchRecentOrders() {
-	fetch('https://api.example.com/recent-orders')
-		.then((response) => response.json())
-		.then((data) => {
-			const recentOrdersElement = document.getElementById('recent-orders');
-			// Iterate through data and create table rows
-			data.forEach((order) => {
-				const row = document.createElement('tr');
-				row.innerHTML = `
-            <td>${order.orderNumber}</td>
-            <td>${order.date}</td>
-            <td>${order.customerName}</td>
-            <td>${order.total}</td>
-            <td>${order.status}</td>
-          `;
-				recentOrdersElement.appendChild(row);
-			});
-		})
-		.catch((error) => console.error('Error fetching recent orders:', error));
+async function fetchAllOrders(admin) {
+	try {
+		const response = await fetch('http://localhost:3001/api/orders/');
+		const json = await response.json();
+		const orders = json.payload.orders;
+		const orderCount = orders.length;
+		const recentOrdersElement = document.getElementById('recent-orders');
+
+		orders.forEach(async (order) => {
+			console.log(order);
+			const date = await convertDate(order.createdAt);
+			const row = document.createElement('tr');
+			row.innerHTML = `
+			<td>${order._id}</td>
+			<td>${date}</td>
+			<td>${order.user.name}</td>
+			<td>$${order.total}</td>
+			<td>${order.status}</td>
+		  `;
+			recentOrdersElement.appendChild(row);
+		});
+
+		const totalOrdersElement = document.getElementById('total-orders');
+		totalOrdersElement.textContent = orderCount;
+	} catch (error) {
+		console.error('Error fetching total orders:', error);
+	}
 }
 
-// Function to fetch and update top selling products
-function fetchTopSellingProducts() {
-	fetch('https://api.example.com/top-selling-products')
-		.then((response) => response.json())
-		.then((data) => {
-			const topSellingElement = document.getElementById('top-selling');
-			// Iterate through data and create table rows
-			data.forEach((product) => {
-				const row = document.createElement('tr');
-				row.innerHTML = `
-            <td>${product.name}</td>
-            <td>${product.price}</td>
-            <td>${product.stock}</td>
-            <td>${product.sales}</td>
-          `;
-				topSellingElement.appendChild(row);
-			});
-		})
-		.catch((error) => console.error('Error fetching top selling products:', error));
+async function fetchAllProducts(user) {
+	try {
+		const response = await fetch('http://localhost:3001/api/products/', {
+			headers: {
+				Authorization: 'Bearer ' + user.refreshToken,
+			},
+		});
+		const json = await response.json();
+		const products = json.payload;
+		const productsRemainingElement = document.getElementById('products-remaining');
+
+		products.forEach((product) => {
+			const row = document.createElement('tr');
+			row.innerHTML = `
+			<td>${product._id}</td>
+			<td>${product.name}</td>
+			<td>$${product.price}</td>
+			<td>${product.quantity}</td>
+		  `;
+			productsRemainingElement.appendChild(row);
+		});
+	} catch (error) {
+		console.error('Error fetching total products:', error);
+	}
 }
 
-// Call the functions to fetch and update data on page load
 window.onload = function () {
-	fetchTotalOrders();
-	fetchTotalCustomers();
-	fetchRecentOrders();
-	fetchTopSellingProducts();
+	const user = JSON.parse(localStorage.getItem('user'));
+	fetchAllOrders(user);
+	fetchAllProducts(user);
+	fetchRecentOrders(user);
+	fetchTopSellingProducts(user);
 };

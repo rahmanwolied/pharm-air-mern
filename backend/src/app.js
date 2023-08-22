@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser');
 
 // importing routes and controllers
 const userRouter = require('../routes/users.routes');
+const orderRouter = require('../routes/order.routes');
 const registerRouter = require('../routes/register.routes');
 const seedRouter = require('../routes/seed.routes');
 const authRouter = require('../routes/auth.routes');
@@ -49,6 +50,7 @@ app.use('/api/products', productRouter);
 app.use('/api/category', categoryRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/checkout', checkoutRouter);
+app.use('/api/orders', orderRouter);
 app.use('/register', registerRouter);
 
 app.get('/', getHome);
