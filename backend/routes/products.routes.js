@@ -13,6 +13,6 @@ router.get('/', handleGetAllProducts);
 router.get('/:id', handleGetProduct);
 router.post('/', isLoggedIn, isAdmin, handleCreateProduct);
 router.put('/:slug', isLoggedIn, isAdmin, handleUpdateProduct);
-router.delete('/:slug', isLoggedIn, isAdmin, handleDeleteProduct);
+router.delete('/:slug', handleDeleteProduct);
 
 module.exports = router;

@@ -7,6 +7,7 @@ const handleAddToCart = async (req, res, next) => {
 		const { user, productId, quantity } = req.body;
 		const userId = user._id;
 		console.log(userId);
+		
 		if (!productId || !quantity) {
 			throw createError(401, 'Product id and quantity are required');
 		}

@@ -34,7 +34,6 @@ function Home() {
 	return (
 		<>
 			<Banner />
-			<Search />
 		</>
 	);
 }
