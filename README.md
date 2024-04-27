@@ -20,8 +20,8 @@ To run pharmAir locally, follow these steps:
 2. Navigate to the project directory: `cd pharmAir`
 3. Navigate to the backend directory and install dependencies: `cd backend; npm install`
 5. Start the development server: `npm start`
-3. Navigate to the frontend directory and install dependencies: `cd ../frontend; npm install`
-5. Start the development server: `npm start`
+3. Create a new terminal instance, navigate to the frontend directory and install dependencies: `cd frontend; npm install`
+5. Start the client development server: `npm start`
 6. Open your browser and visit `http://localhost:3000` or `http://localhost:3001`
 
 ## Technologies Used
