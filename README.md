@@ -18,9 +18,9 @@ To run pharmAir locally, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/rahmanwolied/pharm-air-mern`
 2. Navigate to the project directory: `cd pharmAir`
-3. Navigate to the backend directory and install dependencies: `cd backend;\n npm install`
+3. Navigate to the backend directory and install dependencies: `cd backend; npm install`
 5. Start the development server: `npm start`
-3. Navigate to the frontend directory and install dependencies: `cd ../frontend;\n npm install`
+3. Navigate to the frontend directory and install dependencies: `cd ../frontend; npm install`
 5. Start the development server: `npm start`
 6. Open your browser and visit `http://localhost:3000` or `http://localhost:3001`
 
